@@ -1,0 +1,63 @@
+class Bank:
+    def __init__(self):
+        self.accounts = {}
+
+    def create_account(self):
+        name = input("Enter your name: ")
+        initial_balance = float(input("Enter initial balance: "))
+        password = input("Set a password: ")
+        self.accounts[name] = {"balance": initial_balance, "password": password}
+        print("Account created successfully.")
+
+    def login(self):
+        name = input("Enter your name: ")
+        password = input("Enter your password: ")
+        if name in self.accounts and self.accounts[name]["password"] == password:
+            return name
+        else:
+            print("Invalid username or password. Please try again.")
+            return None
+
+    def deposit(self, user):
+        amount = float(input("Enter the deposit amount: "))
+        self.accounts[user]["balance"] += amount
+        print(f"Deposit successful. Your new balance is: ${self.accounts[user]['balance']}")
+
+    def withdraw(self, user):
+        amount = float(input("Enter the withdrawal amount: "))
+        if amount <= self.accounts[user]["balance"]:
+            self.accounts[user]["balance"] -= amount
+            print(f"Withdrawal successful. Your new balance is: ${self.accounts[user]['balance']}")
+        else:
+            print("Insufficient funds. Withdrawal canceled.")
+
+# Usage example
+bank = Bank()
+
+while True:
+    print("\n1. Create Account\n2. Login\n3. Exit")
+    choice = input("Enter your choice (1/2/3): ")
+
+    if choice == "1":
+        bank.create_account()
+    elif choice == "2":
+        user = bank.login()
+        if user:
+            while True:
+                print("\n1. Deposit\n2. Withdraw\n3. Logout")
+                sub_choice = input("Enter your choice (1/2/3): ")
+
+                if sub_choice == "1":
+                    bank.deposit(user)
+                elif sub_choice == "2":
+                    bank.withdraw(user)
+                elif sub_choice == "3":
+                    print("Logged out.")
+                    break
+                else:
+                    print("Invalid choice. Please try again.")
+    elif choice == "3":
+        print("Exiting the program. Thank you!")
+        break
+    else:
+        print("Invalid choice. Please try again.")
